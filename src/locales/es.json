@@ -95,5 +95,6 @@
     "SKIP_TRACK_MARKED_DISLIKED": "Saltar las canciones marcadas como 'No me gusta'",
     "SKIP_TRACK_SHORTER_THAN": "Saltar las canciones más cortas que",
     "TRAY_ICON": "Icono de la bandeja",
-    "WANT_PLAY_THIS_LINK": "¿Quieres reproducir este enlace?"
+    "WANT_PLAY_THIS_LINK": "¿Quieres reproducir este enlace?",
+    "LABEL_SETTINGS_TAB_GENERAL_CUSTOM_LOGO": "LABEL_SETTINGS_TAB_GENERAL_CUSTOM_LOGO"
 }

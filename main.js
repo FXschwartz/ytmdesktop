@@ -99,6 +99,14 @@ if (settingsProvider.get('has-updated') == true) {
     }, 2000)
 }
 
+if (settingsProvider.get('settings-custom-logo') !== 'DEFAULT') {
+    console.log(
+        'settings-custom-logo: %j',
+        settingsProvider.get('settings-custom-logo')
+    )
+    iconDefault = settingsProvider.get('settings-custom-logo')
+}
+
 if (
     isWindows() &&
     os.release().startsWith('10.') &&
@@ -861,6 +869,14 @@ function createWindow() {
         }
     })
 
+    settingsProvider.onDidChange('settings-custom-logo', (data) => {
+        if (data.newValue) {
+            console.log('new value: %j', data)
+        } else {
+            console.log('no new value: %j', data)
+        }
+    })
+
     settingsProvider.onDidChange('settings-page-zoom', (data) => {
         view.webContents.zoomFactor = data.newValue / 100
     })
@@ -1257,45 +1273,41 @@ function createWindow() {
     }
 
     function windowImageUpload() {
-        // Importing dialog module using remote
+        const fs = require('fs')
 
-        // Defining a Global file path Variable to store
-        // user-selected file
         global.imagePath = undefined
-        // If the platform is 'win32' or 'Linux'
-        if (process.platform !== 'darwin') {
-            // Resolves to a Promise<Object>
+        if (!isMac()) {
             dialog
                 .showOpenDialog({
                     title: 'Select the Image to be uploaded',
                     defaultPath: path.join(__dirname, '../assets/'),
                     buttonLabel: 'Upload',
-                    // Restricting the user to only Text Files.
                     filters: [
                         {
                             name: 'Image Files',
                             extensions: ['png', 'jpg'],
                         },
                     ],
-                    // Specifying the File Selector Property
                     properties: ['openFile'],
                 })
                 .then((file) => {
-                    // Stating whether dialog operation was
-                    // cancelled or not.
-                    console.log(file.canceled)
                     if (!file.canceled) {
-                        // Updating the GLOBAL imagePath variable
-                        // to user-selected file.
-                        global.imagePath = file.imagePath[0].toString()
-                        console.log(global.imagePath)
+                        global.imagePath = file.filePaths[0].toString()
+                        console.log('global image path: %j', global.imagePath)
+                        // iconDefault = global.imagePath;
+                        console.log('default logo: %j', iconDefault)
+                        mainWindow.setIcon(global.imagePath)
+                        settings.setIcon(global.imagePath)
+                        settingsProvider.set(
+                            'settings-custom-logo',
+                            global.imagePath
+                        )
                     }
                 })
                 .catch((err) => {
-                    console.log(err)
+                    console.log('error on image uploading !darwin: %j', err)
                 })
         } else {
-            // If the platform is 'darwin' (macOS)
             dialog
                 .showOpenDialog({
                     title: 'Select the Image to be uploaded',
@@ -1307,19 +1319,15 @@ function createWindow() {
                             extensions: ['png', 'jpg'],
                         },
                     ],
-                    // Specifying the File Selector and Directory
-                    // Selector Property In macOS
                     properties: ['openFile', 'openDirectory'],
                 })
                 .then((file) => {
-                    console.log(file.canceled)
                     if (!file.canceled) {
-                        global.imagePath = file.imagePath[0].toString()
-                        console.log(global.imagePath)
+                        global.imagePath = file.filePaths[0].toString()
                     }
                 })
                 .catch((err) => {
-                    console.log(err)
+                    console.log('error on image uploading darwin: %j', err)
                 })
         }
     }

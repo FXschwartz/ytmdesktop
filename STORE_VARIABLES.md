@@ -24,7 +24,7 @@
 | `settings-app-audio-output`                | String  | `Audio devices`              | DEFAULT_AUDIO_DEVICE         | Define default audio output                                    |
 | `settings-custom-css-app`                  | Boolean | `true` or `false`            | `false`                      | Custom css for main app                                        |
 | `settings-custom-css-page`                 | Boolean | `true` or `false`            | `false`                      | Custom css for web page                                        |
-| `settings-custom-logo`                     | Boolean | `true` or `false`            | `false`                      | Custom logo for main app                                       |
+| `settings-custom-logo`                     | String  | `String Image path`          | DEFAULT                      | Custom logo for main app                                       |
 
 ## Window
 | Key                                   | Type    | Values                       | Default                      | Description                                   |

@@ -7,6 +7,8 @@ if (isLinux()) {
     settingsProvider.setInitialValue('titlebar-type', 'nice') // Without system title bar
 }
 
+// settingsProvider.setInitialValue('settings-custom-logo', 'DEFAULT')
+
 settingsProvider.setInitialValue('settings-page-zoom', 100) // 100
 
 settingsProvider.setInitialValue('last-fm-login', {
