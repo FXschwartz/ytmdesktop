@@ -991,6 +991,10 @@ function createWindow() {
                 windowThemeEditor()
                 break
 
+            case 'show-image-upload':
+                windowImageUpload()
+                break
+
             case 'show-lyrics':
                 windowLyrics()
                 break
@@ -1250,6 +1254,74 @@ function createWindow() {
                     'page=editor/editor&icon=color_lens&hide=btn-minimize,btn-maximize',
             }
         )
+    }
+
+    function windowImageUpload() {
+        // Importing dialog module using remote
+
+        // Defining a Global file path Variable to store
+        // user-selected file
+        global.imagePath = undefined
+        // If the platform is 'win32' or 'Linux'
+        if (process.platform !== 'darwin') {
+            // Resolves to a Promise<Object>
+            dialog
+                .showOpenDialog({
+                    title: 'Select the Image to be uploaded',
+                    defaultPath: path.join(__dirname, '../assets/'),
+                    buttonLabel: 'Upload',
+                    // Restricting the user to only Text Files.
+                    filters: [
+                        {
+                            name: 'Image Files',
+                            extensions: ['png', 'jpg'],
+                        },
+                    ],
+                    // Specifying the File Selector Property
+                    properties: ['openFile'],
+                })
+                .then((file) => {
+                    // Stating whether dialog operation was
+                    // cancelled or not.
+                    console.log(file.canceled)
+                    if (!file.canceled) {
+                        // Updating the GLOBAL imagePath variable
+                        // to user-selected file.
+                        global.imagePath = file.imagePath[0].toString()
+                        console.log(global.imagePath)
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        } else {
+            // If the platform is 'darwin' (macOS)
+            dialog
+                .showOpenDialog({
+                    title: 'Select the Image to be uploaded',
+                    defaultPath: path.join(__dirname, '../assets/'),
+                    buttonLabel: 'Upload',
+                    filters: [
+                        {
+                            name: 'Image Files',
+                            extensions: ['png', 'jpg'],
+                        },
+                    ],
+                    // Specifying the File Selector and Directory
+                    // Selector Property In macOS
+                    properties: ['openFile', 'openDirectory'],
+                })
+                .then((file) => {
+                    console.log(file.canceled)
+                    if (!file.canceled) {
+                        global.imagePath = file.imagePath[0].toString()
+                        console.log(global.imagePath)
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        }
     }
 
     function windowLyrics() {

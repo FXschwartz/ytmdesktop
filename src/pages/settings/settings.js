@@ -12,6 +12,9 @@ const elementBtnAppRelaunch = document.getElementById('btn-relaunch')
 const elementBtnOpenPageEditor = document.getElementById(
     'btn-editor-custom-css-page'
 )
+const elementBtnOpenImageUploader = document.getElementById(
+    'btn-editor-custom-logo-page'
+)
 const elementBtnLastFmLogin = document.getElementById('btn-last-fm-login')
 const elementBtnOpenCompanionServer = document.getElementById(
     'btn-open-companion-server'
@@ -137,6 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
     initElement('titlebar-type', 'change', showRelaunchButton)
     initElement('settings-custom-css-page', 'click')
+    initElement('settings-custom-logo', 'click')
     initElement('settings-last-fm-scrobbler', 'click', () => {
         var login = settingsProvider.get('last-fm-login')
         if (login.username == '') {
@@ -193,8 +197,77 @@ if (elementRangeSkipTrackShorterThan) {
 }
 
 if (elementBtnOpenPageEditor) {
+    console.log('elementBtnOpenImageUploader')
+
     elementBtnOpenPageEditor.addEventListener('click', function () {
         ipc.send('window', { command: 'show-editor-theme' })
+    })
+}
+
+if (elementBtnOpenImageUploader) {
+    // const dialog = remote.dialog;
+    // var uploadFile = document.getElementById('upload');
+
+    // Defining a Global file path Variable to store
+    // user-selected file
+    // global.filepath = undefined;
+
+    elementBtnOpenImageUploader.addEventListener('click', function () {
+        ipc.send('window', { command: 'show-image-upload' })
+        // ipc.send('window', { command: 'show-file-explor'})
+        // console.log('process.platform' + process.platform);
+        // if (process.platform !== 'darwin') {
+        //     // Resolves to a Promise<Object>
+        //     dialog.showOpenDialog({
+        //         title: 'Select the File to be uploaded',
+        //         defaultPath: path.join(__dirname, '../assets/'),
+        //         buttonLabel: 'Upload',
+        //         // Restricting the user to only Text Files.
+        //         filters: [
+        //             {
+        //                 name: 'Text Files',
+        //                 extensions: ['txt', 'docx']
+        //             }, ],
+        //         // Specifying the File Selector Property
+        //         properties: ['openFile']
+        //     }).then(file => {
+        //         // Stating whether dialog operation was
+        //         // cancelled or not.
+        //         console.log(file.canceled);
+        //         if (!file.canceled) {
+        //           // Updating the GLOBAL filepath variable
+        //           // to user-selected file.
+        //           global.filepath = file.filePaths[0].toString();
+        //           console.log(global.filepath);
+        //         }
+        //     }).catch(err => {
+        //         console.log(err)
+        //     });
+        // }
+        // else {
+        // If the platform is 'darwin' (macOS)
+        // dialog.showOpenDialog({
+        //     title: 'Select the File to be uploaded',
+        //     defaultPath: path.join(__dirname, '../assets/'),
+        //     buttonLabel: 'Upload',
+        //     filters: [
+        //         {
+        //             name: 'Text Files',
+        //             extensions: ['txt', 'docx']
+        //         }, ],
+        //     // Specifying the File Selector and Directory
+        //     // Selector Property In macOS
+        //     properties: ['openFile', 'openDirectory']
+        // }).then(file => {
+        //     console.log(file.canceled);
+        //     if (!file.canceled) {
+        //       global.filepath = file.filePaths[0].toString();
+        //       console.log(global.filepath);
+        //     }
+        // }).catch(err => {
+        //     console.log(err)
+        // });
+        // }
     })
 }
 
